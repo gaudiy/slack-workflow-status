@@ -3497,14 +3497,14 @@ async function main() {
             type: "input",
             element: {
                 type: "checkboxes",
+                action_id: "this_is_an_action_id",
                 options: [
                     {
+                        value: "A1",
                         text: {
                             type: "plain_text",
-                            text: "Gary Danko",
-                            emoji: true,
+                            text: "Checkbox 1",
                         },
-                        value: "value-0",
                     },
                 ],
             },
