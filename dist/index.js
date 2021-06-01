@@ -3477,7 +3477,13 @@ async function main() {
     if (pull_requests != "") {
         pull_requests = pull_requests.substr(1);
         status_string =
-            workflow_msg + " " + actor + "'s `pull_request`" + "▶︎" + pull_requests + "\n";
+            workflow_msg +
+                " " +
+                actor +
+                "'s `pull_request`" +
+                " ＞ " +
+                pull_requests +
+                "\n";
     }
     // We're using old style attachments rather than the new blocks because:
     // - Blocks don't allow colour indicators on messages
