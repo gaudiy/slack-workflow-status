@@ -3470,14 +3470,14 @@ async function main() {
                 workflow_run.data.repository.full_name +
                 "/pull/" +
                 pull_request.number +
-                "|#" +
+                "|" +
                 "*🗒PRページ*" +
                 ">";
     }
     if (pull_requests != "") {
         pull_requests = pull_requests.substr(1);
         status_string =
-            workflow_msg + " " + actor + "'s `pull_request`" + pull_requests + "\n";
+            workflow_msg + " " + actor + "'s `pull_request`" + "▶︎" + pull_requests + "\n";
     }
     // We're using old style attachments rather than the new blocks because:
     // - Blocks don't allow colour indicators on messages
