@@ -10,11 +10,9 @@
  * License: MIT                                                               *
  * Copyright (c) 2020 Gamesight, Inc                                               *
 \******************************************************************************/
-
 import * as core from "@actions/core";
 import { context, GitHub } from "@actions/github";
 import * as request from "request-promise-native";
-
 interface SlackPayloadBody {
   channel?: string;
   username?: string;
@@ -24,7 +22,6 @@ interface SlackPayloadBody {
   text?: string;
   unfurl_links?: boolean;
 }
-
 interface SlackAttachment {
   mrkdwn_in: [string];
   color: string;
@@ -43,16 +40,13 @@ interface SlackAttachment {
   title_link?: string;
   ts?: number;
 }
-
 interface SlackAttachmentFields {
   short: boolean;
   value: string;
   title?: string;
 }
-
 process.on("unhandledRejection", handleError);
 main().catch(handleError);
-
 // Action entrypoint
 async function main() {
   // Collect Action Inputs
@@ -69,7 +63,6 @@ async function main() {
   const slack_emoji: string = core.getInput("icon_emoji"); // https://www.webfx.com/tools/emoji-cheat-sheet/
   const slack_text: string = core.getInput("text");
   const slack_unfurl_links: boolean = core.getInput("unfurl_links") == "true";
-
   // Force as secret, forces *** when trying to print or log values
   core.setSecret(github_token);
   core.setSecret(webhook_url);
@@ -91,13 +84,11 @@ async function main() {
   });
   // Fetch workflow job information
   const jobs_response = await github.request(workflow_run.data.jobs_url);
-
   // Build Job Data Fields and Workflow Status
   let job_fields: SlackAttachmentFields[] = [];
   let workflow_success = true;
   let workflow_failure = false;
   let job_status_icon = "\u2713";
-
   for (let job of jobs_response.data.jobs) {
     // Ignore the job that is running this action.
     if (job.status != "completed") {
@@ -132,11 +123,9 @@ async function main() {
         ")",
     });
   }
-
   // Configure slack attachment styling
   let workflow_color: string = ""; // can be good, danger, warning or a HEX colour (#00FF00)
   let workflow_msg: string = "";
-
   if (workflow_success) {
     workflow_color = "good";
     workflow_msg = "Success:";
@@ -147,7 +136,6 @@ async function main() {
     workflow_color = "warning";
     workflow_msg = "Cancelled:";
   }
-
   // Payload Formatting Shortcuts
   const workflow_duration: string = job_duration(
     new Date(workflow_run.data.created_at),
@@ -186,7 +174,6 @@ async function main() {
     " completed in `" +
     workflow_duration +
     "`";
-
   // Build Pull Request string if required
   // ここからメッセージ作成されている
   let pull_requests = "";
@@ -215,7 +202,6 @@ async function main() {
   // We're using old style attachments rather than the new blocks because:
   // - Blocks don't allow colour indicators on messages
   // - Block are limited to 10 fields. >10 jobs in a workflow results in payload failure
-
   // Build our notification attachment
   const slack_attachment: SlackAttachment = {
     mrkdwn_in: ["text"],
@@ -225,12 +211,10 @@ async function main() {
     footer_icon: "https://github.githubassets.com/favicon.ico",
     fields: include_jobs == "true" ? job_fields : [],
   };
-
   // Build our notification payload
   const slack_payload_body: SlackPayloadBody = {
     attachments: [slack_attachment],
   };
-
   // Do we have any overrides?
   if (slack_name != "") {
     slack_payload_body.username = slack_name;
@@ -250,19 +234,16 @@ async function main() {
   if (slack_icon != "") {
     slack_payload_body.unfurl_links = slack_unfurl_links;
   }
-
   const request_options = {
     uri: webhook_url,
     method: "POST",
     body: slack_payload_body,
     json: true,
   };
-
   request(request_options).catch((err) => {
     core.setFailed(err);
   });
 }
-
 // Converts start and end dates into a duration string
 const job_duration = function (start: any, end: any) {
   const duration = end - start;
@@ -289,7 +270,6 @@ const job_duration = function (start: any, end: any) {
     format_duration(seconds, "s", false).trim()
   );
 };
-
 function handleError(err: any) {
   console.error(err);
   if (err && err.message) {
