@@ -42,6 +42,7 @@ interface SlackAttachment {
   title?: string;
   title_link?: string;
   ts?: number;
+  blocks?: any; //any型変更
 }
 
 interface SlackAttachmentFields {
@@ -221,6 +222,22 @@ async function main() {
     mrkdwn_in: ["text"],
     color: workflow_color,
     text: status_string,
+    blocks: {
+      type: "input",
+      element: {
+        type: "checkboxes",
+        options: [
+          {
+            text: {
+              type: "plain_text",
+              text: "Gary Danko",
+              emoji: true,
+            },
+            value: "value-0",
+          },
+        ],
+      },
+    },
     footer: repo_url,
     footer_icon: "https://github.githubassets.com/favicon.ico",
     fields: include_jobs == "true" ? job_fields : [],
