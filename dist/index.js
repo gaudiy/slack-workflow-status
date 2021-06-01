@@ -3493,22 +3493,6 @@ async function main() {
         mrkdwn_in: ["text"],
         color: workflow_color,
         text: status_string,
-        blocks: {
-            type: "input",
-            element: {
-                type: "checkboxes",
-                action_id: "this_is_an_action_id",
-                options: [
-                    {
-                        value: "A1",
-                        text: {
-                            type: "plain_text",
-                            text: "Checkbox 1",
-                        },
-                    },
-                ],
-            },
-        },
         footer: repo_url,
         footer_icon: "https://github.githubassets.com/favicon.ico",
         fields: include_jobs == "true" ? job_fields : [],
