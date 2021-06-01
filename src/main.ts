@@ -206,10 +206,8 @@ async function main() {
     status_string =
       workflow_msg +
       " " +
-      actor +
-      "'s `pull_request`" +
-      " ＞ " +
       pull_requests +
+      "へGo！"
       "\n";
   }
 
