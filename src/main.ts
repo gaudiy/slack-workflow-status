@@ -21,6 +21,7 @@ interface SlackPayloadBody {
   attachments: SlackAttachment[];
   text?: string;
   unfurl_links?: boolean;
+  image_url?: string;
 }
 interface SlackAttachment {
   mrkdwn_in: [string];
@@ -189,11 +190,7 @@ async function main() {
   }
   if (pull_requests != "") {
     pull_requests = pull_requests.substr(1);
-    status_string =
-      workflow_msg +
-      " " +
-      pull_requests +
-      "\n";
+    status_string = workflow_msg + " " + pull_requests + "\n";
   }
 
   // We're using old style attachments rather than the new blocks because:
@@ -211,6 +208,8 @@ async function main() {
   // Build our notification payload
   const slack_payload_body: SlackPayloadBody = {
     attachments: [slack_attachment],
+    image_url:
+      "https://yakuneba-community.firebaseapp.com/images/topicImages%2F1617935567921%E3%81%BF%E3%82%93%E3%83%8D%E3%83%8F%E3%82%99_%E3%82%B5%E3%83%9B%E3%82%9A%E3%83%BC%E3%83%88%E5%BA%83%E5%A0%B4.png?alt=media&token=7e6eebb6-bcbb-40e9-957a-1eff5e0b751b&size=562x316&format=webp",
   };
   // Do we have any overrides?
   if (slack_name != "") {
